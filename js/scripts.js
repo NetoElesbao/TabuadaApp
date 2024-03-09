@@ -1,24 +1,46 @@
 // Seleção de elementos
-const multiplicationform = document.querySelector("#multiplication-form");
+const multiplicationForm = document.querySelector("#multiplication-form");
 const numberInput = document.querySelector("#number");
-const multiplicationInput = document.querySelector("#multiplicator");
-
-console.log(multiplicationform);
-console.log(numberInput);
-console.log(multiplicationInput);
-
+const multiplicatorInput = document.querySelector("#multiplicator");
+const multiplicationOperations = document.querySelector(
+  "#multiplication-operations"
+);
+const multiplicationTitle = document.querySelector(
+  "#multiplication-title span"
+);
 // Funções
-multiplicationform.addEventListener("submit", (event) => {
-  event.preventDefault();
+const createTable = (number, multiplicator) => {
+  // debugger;
+  multiplicationOperations.innerHTML = "";
 
-  const multiplicatonNumber = +numberInput.value;
-  const multiplicatorNumber = +multiplicationInput.value;
+  for (i = 1; i <= multiplicator; i++) {
+    const result = number * i;
 
-  if (!multiplicatonNumber || !multiplicatorNumber) {
-    return;
+    const template = `<div class="row">
+    <div class="operations">${number} x ${i} = </div>
+    <div class="result">${result}</div>
+    </div>`;
+
+    const parser = new DOMParser();
+
+    const htmlTemplate = parser.parseFromString(template, "text/html");
+
+    const row = htmlTemplate.querySelector(".row");
+
+    multiplicationOperations.appendChild(row);
   }
 
-  console.log(multiplicatonNumber, multiplicatorNumber);
-});
+  multiplicationTitle.innerText = number;
+};
 
 // Eventos
+
+multiplicationForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const number = +numberInput.value;
+  const multiplicator = +multiplicatorInput.value;
+
+  if (!number || !multiplicator) return;
+  createTable(number, multiplicator);
+});
